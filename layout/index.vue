@@ -5,15 +5,24 @@
   <main>
     <div class="main-container">
       <div class="main-container-action">
-        <button
-          class="btn"
-          @click="modalVisible = true"
-          :disabled="store.contadores.length >= 20"
-        >
-          Agregar Contador
-        </button>
+        <div class="main-container-action-search">
+          <CustomInput
+            id="buscar"
+            v-model="store.busqueda"
+            label="Buscar contador..."
+            type="text"
+          />
+        </div>
+        <div>
+          <button
+            class="btn"
+            @click="modalVisible = true"
+            :disabled="store.contadores.length >= 20"
+          >
+            Agregar Contador
+          </button>
+        </div>
       </div>
-
       <ListadorDeContadores
         :contadores="store.contadoresFiltrados"
         @actualizar="actualizarContador"
@@ -41,6 +50,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import ListadorDeContadores from "./ListadoDeContadores";
 import ModalAgregarContador from "./ModalAgregarContador.vue";
+import CustomInput from "../components/CustomInput.vue";
 
 const store = useContadoresStore();
 const modalVisible = ref(false);
@@ -76,7 +86,7 @@ function ordenarContadores(value) {
 .main-container {
   min-width: 800px;
   max-width: 100%;
-  padding: 1rem;
+  padding: 0;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -86,10 +96,15 @@ function ordenarContadores(value) {
 
 .main-container-action {
   display: flex;
+  flex-wrap: wrap;
   justify-content: flex-end; /* mueve el botón a la derecha */
   width: 100%;
   border-bottom: 1px solid var(--text-light);
   padding: 1rem;
+}
+
+.main-container-action-search {
+  padding: 0.27rem 0 0;
 }
 
 @media (max-width: 800px) {
@@ -99,6 +114,7 @@ function ordenarContadores(value) {
   }
   .main-container-action {
     display: flex;
+
     justify-content: flex-end; /* mueve el botón a la derecha */
     width: 100%;
     border-bottom: 1px solid var(--text-light);

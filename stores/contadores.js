@@ -4,21 +4,34 @@ export const useContadoresStore = defineStore("contadores", {
   state: () => ({
     contadores: [],
     filtros: { tipo: null, valor: null },
+    busqueda: "", // <-- nuevo
   }),
   getters: {
     contadoresFiltrados: (state) => {
       let c = [...state.contadores];
+
+      // Filtro mayor/menor
       if (state.filtros.tipo && state.filtros.valor !== null) {
         c =
           state.filtros.tipo === "mayor"
             ? c.filter((x) => x.valor > state.filtros.valor)
             : c.filter((x) => x.valor < state.filtros.valor);
       }
+
+      // Filtro por nombre
+      if (state.busqueda.trim() !== "") {
+        const q = state.busqueda.toLowerCase();
+        c = c.filter((x) => x.nombre.toLowerCase().includes(q));
+      }
+
       return c;
     },
     sumaTotal: (state) => state.contadores.reduce((acc, c) => acc + c.valor, 0),
   },
   actions: {
+    setBusqueda(valor) {
+      this.busqueda = valor;
+    },
     // cargar datos desde localStorage/sessionStorage (solo cliente)
     cargarDesdeStorage() {
       if (process.client) {
