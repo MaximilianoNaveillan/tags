@@ -11,7 +11,7 @@
       <button class="btn" @click="sumar" :disabled="contador.valor >= 20">
         +
       </button>
-      <button class="btn" @click="eliminar">Eliminar</button>
+      <button class="btn btn-danger" @click="eliminar">Eliminar</button>
     </div>
   </div>
 </template>

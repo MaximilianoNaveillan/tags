@@ -78,6 +78,7 @@ function emitFiltrar(filtros) {
   align-items: center;
   gap: 2rem; /* espacio entre Ordenar y Filtrar */
   transition: transform 0.3s ease, opacity 0.3s ease;
+  z-index: 1000;
 }
 
 /* Media queries para mobile (<1150px) */
