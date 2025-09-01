@@ -1,5 +1,4 @@
 import { defineStore } from "pinia";
-import { onMounted } from "vue";
 
 export const useContadoresStore = defineStore("contadores", {
   state: () => ({
@@ -20,35 +19,35 @@ export const useContadoresStore = defineStore("contadores", {
     sumaTotal: (state) => state.contadores.reduce((acc, c) => acc + c.valor, 0),
   },
   actions: {
+    // cargar datos desde localStorage/sessionStorage (solo cliente)
     cargarDesdeStorage() {
-      // onMounted solo se ejecuta en cliente
-      onMounted(() => {
+      if (process.client) {
         const c = localStorage.getItem("contadores");
         if (c) this.contadores = JSON.parse(c);
         const f = sessionStorage.getItem("filtros");
         if (f) this.filtros = JSON.parse(f);
-      });
+      }
     },
 
     agregar(contador) {
       this.contadores.push(contador);
-      if (typeof window !== "undefined")
+      if (process.client)
         localStorage.setItem("contadores", JSON.stringify(this.contadores));
     },
     eliminar(id) {
       this.contadores = this.contadores.filter((c) => c.id !== id);
-      if (typeof window !== "undefined")
+      if (process.client)
         localStorage.setItem("contadores", JSON.stringify(this.contadores));
     },
     actualizar(id, valor) {
       const c = this.contadores.find((c) => c.id === id);
       if (c) c.valor = valor;
-      if (typeof window !== "undefined")
+      if (process.client)
         localStorage.setItem("contadores", JSON.stringify(this.contadores));
     },
     setFiltros(filtros) {
       this.filtros = filtros;
-      if (typeof window !== "undefined")
+      if (process.client)
         sessionStorage.setItem("filtros", JSON.stringify(filtros));
     },
     ordenar(prop, dir) {
